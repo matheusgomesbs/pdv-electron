@@ -1,23 +1,23 @@
-import { app } from 'electron';
-import ElectronApp from './core/main';
+import { app } from 'electron'
+import ElectronApp from './core/main'
 
 (async () => {
-  const electronApp = new ElectronApp();
-  electronApp.bootstrap();
+  const electronApp = new ElectronApp()
+  electronApp.bootstrap()
   electronApp.tray = [
     {
       label: 'Mostrar', click: () => {
-        electronApp.window?.show();
+        electronApp.window?.show()
       }
     },
     {
       label: 'Minimizar', click: () => {
-        electronApp.window?.minimize();
+        electronApp.window?.minimize()
       }
     },
     {
       label: 'Minimizar para bandeja', click: () => {
-        electronApp.window?.hide();
+        electronApp.window?.hide()
       }
     },
     { label: 'separator', type: 'separator' },
@@ -28,7 +28,7 @@ import ElectronApp from './core/main';
     },
     { label: 'separator', type: 'separator' },
     {
-      label: `Reiniciar XML Auditor`, click: () => {
+      label: `Reiniciar PDV Electron`, click: () => {
         app.relaunch();
         app.exit();
       }
@@ -36,4 +36,4 @@ import ElectronApp from './core/main';
     { label: 'separator', type: 'separator' },
     { label: 'Sair', role: 'quit' }
   ]
-})();
+})()

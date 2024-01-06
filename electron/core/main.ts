@@ -1,6 +1,6 @@
-import { app, BrowserWindow, Menu, nativeImage, shell, Tray } from 'electron';
-import { release } from 'node:os';
-import path from 'node:path';
+import { app, BrowserWindow, Menu, nativeImage, shell, Tray } from 'electron'
+import { release } from 'node:os'
+import path from 'node:path'
 
 process.env.DIST = path.join(__dirname, '../dist')
 process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public')
