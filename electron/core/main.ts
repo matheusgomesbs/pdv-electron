@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, nativeImage, shell, Tray } from 'electron'
+import { app, BrowserWindow, BrowserWindowConstructorOptions, Menu, nativeImage, shell, Tray } from 'electron'
 import { release } from 'node:os'
 import path from 'node:path'
 
@@ -7,6 +7,7 @@ process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.
 
 export type ElectronType = InstanceType<typeof ElectronApp>
 export type ModuleFunction = (app: ElectronType) => void | Promise<void>
+export type Options = BrowserWindowConstructorOptions
 
 export default class ElectronApp {
   private readonly devURL: string = `${process.env["VITE_DEV_SERVER_URL"]}`
@@ -17,12 +18,12 @@ export default class ElectronApp {
   public window: BrowserWindow | null = null
   public tray: Electron.MenuItemConstructorOptions[] = []
 
-  async bootstrap(): Promise<void> {
-    await this.startElectron()
+  async bootstrap(options: Options): Promise<void> {
+    await this.startElectron(options)
     await this.loadModules()
   }
 
-  private async startElectron() {
+  private async startElectron(options: Options) {
     const singleInstanceLock = app.requestSingleInstanceLock()
 
     if(!singleInstanceLock) {
@@ -37,7 +38,7 @@ export default class ElectronApp {
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
-        this.createWindow()
+        this.createWindow(options)
       }
     })
 
@@ -57,11 +58,11 @@ export default class ElectronApp {
     })
 
     await app.whenReady()
-    await this.createWindow()
+    await this.createWindow(options)
     await this.createTray()
   }
 
-  private async createWindow(): Promise<void> {
+  private async createWindow(options: Options): Promise<void> {
     if(this.window) {
       if (this.window.isMinimized()) {
         this.window.restore()
@@ -74,12 +75,9 @@ export default class ElectronApp {
 
     this.window = new BrowserWindow({
       icon: this.icon,
-      title: 'PDV Electron',
       minWidth: 1024,
       minHeight: 768,
-      width: 1024,
-      height: 768,
-      autoHideMenuBar: true,
+      ...options,
       webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
       },

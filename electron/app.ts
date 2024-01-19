@@ -1,9 +1,12 @@
-import { app } from 'electron'
+import { app, BrowserWindowConstructorOptions } from 'electron'
 import ElectronApp from './core/main'
 
 (async () => {
+  const options: BrowserWindowConstructorOptions = {
+    title: 'PDV Electron',
+  }
   const electronApp = new ElectronApp()
-  electronApp.bootstrap()
+  electronApp.bootstrap(options)
   electronApp.tray = [
     {
       label: 'Mostrar', click: () => {
