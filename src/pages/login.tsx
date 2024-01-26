@@ -7,6 +7,7 @@ import { ModeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 const formLoginSchema = z.object({
   username: z.string().min(1, {
@@ -18,7 +19,9 @@ const formLoginSchema = z.object({
 })
 
 export default function Login() {
- const form = useForm<z.infer<typeof formLoginSchema>>({
+  const navigate = useNavigate()
+
+  const form = useForm<z.infer<typeof formLoginSchema>>({
     resolver: zodResolver(formLoginSchema),
     defaultValues: {
       username: "",
@@ -28,13 +31,7 @@ export default function Login() {
  
   function onSubmit(values: z.infer<typeof formLoginSchema>) {
     console.log(values)
-  }
-
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
+    navigate('/home')
   }
   
   return (
@@ -43,9 +40,6 @@ export default function Login() {
         <ModeToggle />
       </div>
       <Clock className="text-9xl font-thin" />
-      <span className="mt-4 text-xl font-thin capitalize">
-        {new Date().toLocaleDateString('pt-BR', dateOptions)}
-      </span>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-4 max-w-96 w-full">
         <FormField
@@ -53,7 +47,7 @@ export default function Login() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Usuário:</FormLabel>
+                <FormLabel className="select-none">Usuário:</FormLabel>
                 <FormControl className="text-sm">
                   <Input className="h-12" type="text" placeholder="Digite seu usuário" {...field} />
                 </FormControl>
@@ -66,7 +60,7 @@ export default function Login() {
             name="password"
             render={({ field }) => (
               <FormItem>
-              <FormLabel>Senha:</FormLabel>
+              <FormLabel className="select-none">Senha:</FormLabel>
               <FormControl>
                 <Input className="h-12" type="password" placeholder="*********" {...field} />
               </FormControl>

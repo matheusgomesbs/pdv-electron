@@ -8,6 +8,13 @@ export default function Clock({className, ...props}: React.ComponentProps<'h1'>)
     minutes: date.getMinutes(),
   });
 
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }
+
   React.useEffect(() => {
     const timer = setInterval(() => {
       setDateTime({
@@ -20,11 +27,16 @@ export default function Clock({className, ...props}: React.ComponentProps<'h1'>)
   }, [dateTime]);
 
   return (
-    <h1 
+    <div className="select-none flex flex-col items-center">
+      <h1 
       className={cn('text-5xl tracking-tight', className)} 
       {...props}
     >
-     {`${dateTime.hours.toString().padStart(2, '0')}:${dateTime.minutes.toString().padStart(2, '0')}`}
-    </h1>
+        {`${dateTime.hours.toString().padStart(2, '0')}:${dateTime.minutes.toString().padStart(2, '0')}`}
+      </h1>
+      <span className="mt-4 text-xl font-thin capitalize">
+        {new Date().toLocaleDateString('pt-BR', dateOptions)}
+      </span>
+    </div>
   );
 }

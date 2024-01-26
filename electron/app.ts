@@ -4,7 +4,6 @@ import ElectronApp from './core/main'
 (async () => {
   const options: BrowserWindowConstructorOptions = {
     title: 'PDV Electron',
-    frame: true,
   }
   const electronApp = new ElectronApp()
   electronApp.bootstrap(options)
