@@ -59,7 +59,9 @@ export default class ElectronApp {
 
     await app.whenReady()
     await this.createWindow(options)
-    await this.createTray()
+    if(this.tray.length) {
+      await this.createTray()
+    }
   }
 
   private async createWindow(options: Options): Promise<void> {
